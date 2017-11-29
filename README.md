@@ -5,7 +5,7 @@ Playbooks for managing the Vault keys in your MacOS keychain.  These playbooks a
 
 # Requirements
  - Current Ansible version installed from pip or brew in your path.
-  - `brew install ansible`
+  `brew install ansible`
  - Make (should be present by default on MacOS)
 
 # Usage
