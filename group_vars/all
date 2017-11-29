@@ -7,9 +7,9 @@ vault_host: ""
 identifier: "test"
 # keyholders is list of users who will be recieving keys should be the same number of unseal keys created
 keyholders:
-  -
-  -
-  -
-  -
-  -
+  - example_user1
+  - example_user2
+  - example_user3
+  - exmaple_user4
+  - example_user5
 keys: "{{ lookup('file', 'keyfile').splitlines() }}"

@@ -16,7 +16,7 @@
   - name: Validate Key Stored Correctly
     shell: "/usr/bin/security find-generic-password -s vault_{{ identifier }} -a {{ user }} -w"
     register: local_unseal_key
-    failed_when:  local_unseal_key.stdout != unseal_key['content'] | b64decode
+    failed_when: local_unseal_key.stdout != unseal_key['content'] | b64decode
     delegate_to: localhost
 
   - name: Remove Key from Jumphost
