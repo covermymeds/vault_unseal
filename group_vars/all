@@ -1,0 +1,15 @@
+---
+user: "{{ lookup('env','LOGNAME') }}"
+store: false
+unseal: false
+vault_host: ""
+# identifer is a unique name to identify the key in keychain
+identifier: "test"
+# keyholders is list of users who will be recieving keys should be the same number of unseal keys created
+keyholders:
+  -
+  -
+  -
+  -
+  -
+keys: "{{ lookup('file', 'keyfile').splitlines() }}"

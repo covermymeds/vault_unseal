@@ -1,0 +1,26 @@
+---
+- hosts: all
+  become: false
+  gather_facts: false
+
+  tasks:
+  - name: Pull Key From Jumphost
+    slurp:
+      src: "/home/{{ user }}/{{ identifier }}.vaultkey"
+    register: unseal_key
+
+  - name: Store Keys in MacOS Keychain
+    shell: "/usr/bin/security add-generic-password -s vault_{{ identifier }} -w {{ unseal_key['content'] | b64decode }} -a {{ user }} -U"
+    delegate_to: localhost
+
+  - name: Validate Key Stored Correctly
+    shell: "/usr/bin/security find-generic-password -s vault_{{ identifier }} -a {{ user }} -w"
+    register: local_unseal_key
+    failed_when:  local_unseal_key.stdout != unseal_key['content'] | b64decode
+    delegate_to: localhost
+
+  - name: Remove Key from Jumphost
+    file:
+      path: "/home/{{ user }}/{{ identifier }}.vaultkey"
+      state: absent
+

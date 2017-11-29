@@ -1,0 +1,19 @@
+---
+- hosts: localhost
+  become: false
+  gather_facts: false
+
+  tasks:
+
+  - name: Get Key from MacOS Keychain
+    command: "/usr/bin/security find-generic-password -s vault_{{ identifier }} -a {{ user }} -w"
+    register: unseal_key
+
+  - name: Send Unseal Key
+    uri:
+      url: "https://{{ vault_host }}:8200/v1/sys/unseal"
+      method: PUT
+      body_format: json
+      status_code: 200
+      body:
+        key: "{{ unseal_key.stdout }}"

@@ -1,0 +1,15 @@
+---
+- hosts: all
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: Send Keys to Jumphost
+      copy:
+        content: "{{ item.1 }}"
+        dest: "/home/{{ item.0 }}/{{ identifier }}.vaultkey"
+        owner: "{{ item.0 }}"
+        mode: 0400
+      with_together:
+        - "{{ keyholders }}"
+        - "{{ keys }}"
